@@ -1,29 +1,18 @@
 import java.io.*;
 import java.net.*;
 
-/**
- * ============================================================
- *  Client.java  –  Chat Client
- *  Course : Network Programming
- *  Port   : 20774  (last 5 digits of academic ID)
- *
- *  ► Open as many terminals as you want and run:
- *       java Client
- *  ► Each instance joins the same group chat on the server.
- * ============================================================
- */
+
 public class Client {
 
-    private static final String HOST = "localhost"; // change if server is remote
-    private static final int    PORT = 20774;       // must match Server.java
+    private static final String HOST = "localhost"; 
+    private static final int    PORT = 20774;       
 
-    // ─────────────────────────────────────────────────────────
     public static void main(String[] args) {
 
         printBanner();
 
         try (
-            // Connect to the server
+            // Connect server
             Socket       socket    = new Socket(HOST, PORT);
             PrintWriter  toServer  = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader fromServer = new BufferedReader(
@@ -34,7 +23,7 @@ public class Client {
             System.out.println("[CLIENT] Connected to " + HOST + ":" + PORT);
             System.out.println("[CLIENT] Type messages and press Enter. Type 'exit' to quit.\n");
 
-            // ── Thread: continuously print messages FROM server ───
+            // Thread
             Thread listener = new Thread(() -> {
                 try {
                     String line;
@@ -48,7 +37,7 @@ public class Client {
             listener.setDaemon(true); // auto-stop when main exits
             listener.start();
 
-            // ── Main thread: read user input → send to server ────
+            
             String userInput;
             while ((userInput = fromUser.readLine()) != null) {
                 toServer.println(userInput);
